@@ -1,4 +1,4 @@
-import Joi from "joi";
+import * as Joi from "joi";
 
 export const ENV_VALIDATION_SCHEMA = Joi.object({
   DATASOURCE_USERNAME: Joi.required(),
