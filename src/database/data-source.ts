@@ -1,6 +1,8 @@
 import { DataSource } from "typeorm";
-import * as dotenv from 'dotenv'
+import * as dotenv from "dotenv";
+import * as dotEnvExpand from "dotenv-expand";
 
+dotEnvExpand.expand(dotenv.config());
 export default new DataSource({
   type: "postgres",
   url: process.env.DATASOURCE_URL,
