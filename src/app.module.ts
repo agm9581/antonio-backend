@@ -5,9 +5,10 @@ import { DatabaseModule } from './database/database.module';
 import { EnvModule } from './env/env.module';
 import { OrdersModule } from './orders/orders.module';
 import { PaymentModule } from './payment/payment.module';
+import { CategoryModule } from './category/category.module';
 
 @Module({
-  imports: [UsersModule, CommonModule, DatabaseModule, EnvModule, OrdersModule, PaymentModule],
+  imports: [UsersModule, CommonModule, DatabaseModule, EnvModule, OrdersModule, PaymentModule, CategoryModule],
   controllers: [],
   providers: [],
 })
