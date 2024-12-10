@@ -6,9 +6,10 @@ import { EnvModule } from './env/env.module';
 import { OrdersModule } from './orders/orders.module';
 import { PaymentModule } from './payment/payment.module';
 import { CategoryModule } from './category/category.module';
+import { ProductModule } from './product/product.module';
 
 @Module({
-  imports: [UsersModule, CommonModule, DatabaseModule, EnvModule, OrdersModule, PaymentModule, CategoryModule],
+  imports: [UsersModule, CommonModule, DatabaseModule, EnvModule, OrdersModule, PaymentModule, CategoryModule, ProductModule],
   controllers: [],
   providers: [],
 })
