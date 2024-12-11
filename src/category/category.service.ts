@@ -1,27 +1,52 @@
-import { Injectable } from '@nestjs/common';
-import { CreateCategoryDto } from './dto/create-category.dto';
-import { UpdateCategoryDto } from './dto/update-category.dto';
-import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
+import { CreateCategoryDto } from "./dto/create-category.dto";
+import { UpdateCategoryDto } from "./dto/update-category.dto";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Category } from "./entities/category.entity";
+import { Repository } from "typeorm";
+import { PaginationDto } from "src/common/dto/pagination.dto";
+import { DEFAULT_PAGE_SIZE } from "src/common/util/common.constants";
 
 @Injectable()
 export class CategoryService {
+  constructor(
+    @InjectRepository(Category)
+    private readonly categoryRepository: Repository<Category>,
+  ) {}
   create(createCategoryDto: CreateCategoryDto) {
-    return 'This action adds a new category';
+    const category = this.categoryRepository.create(createCategoryDto);
+    return this.categoryRepository.save(category);
   }
 
-  findAll(paginationDto:PaginationDto) {
-    return `This action returns all category`;
+  findAll(paginatioDto: PaginationDto) {
+    const { limit, offset } = paginatioDto;
+    return this.categoryRepository.find({
+      skip: offset,
+      take: limit ?? DEFAULT_PAGE_SIZE.CATEGORY,
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} category`;
+  async findOne(id: number) {
+    const category = await this.categoryRepository.findOne({ where:{id}, relations:{products:true}});
+    if (!category) {
+      throw new NotFoundException("Category not found");
+    }
+    return category;
   }
 
-  update(id: number, updateCategoryDto: UpdateCategoryDto) {
-    return `This action updates a #${id} category`;
+  async update(id: number, updateCategoryDto: UpdateCategoryDto) {
+    const category = await this.categoryRepository.preload({ id, ...updateCategoryDto });
+    if (!category) {
+      throw new NotFoundException("Category not found");
+    }
+    return this.categoryRepository.save(category);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} category`;
+  async remove(id: number) {
+    const category = await this.findOne(id);
+    if(category.products.length){
+      throw new ConflictException('Category has related products')
+    }
+    return this.categoryRepository.remove(category);
   }
 }
