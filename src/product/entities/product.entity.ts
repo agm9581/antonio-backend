@@ -1,10 +1,12 @@
 import { Category } from "src/category/entities/category.entity";
 import { RegistryDates } from "src/common/embedded/registry-dates.embedded";
+import { OrderItem } from "src/orders/entities/order-item.entity";
 import {
   Column,
   Entity,
   JoinTable,
   ManyToMany,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
 
@@ -28,4 +30,11 @@ export class Product {
   @ManyToMany(() => Category, (categories) => categories.products)
   @JoinTable({ name: "product_to_category" })
   categories: Category[];
+
+  @OneToMany(()=> OrderItem, item => item.product)
+  items: OrderItem[]
+
+  get orders(){
+    return this.items.map(item =>item.order)
+  }
 }
