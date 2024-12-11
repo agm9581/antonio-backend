@@ -4,6 +4,7 @@ import { RegistryDates } from "src/common/embedded/registry-dates.embedded";
 import { User } from "src/users/entities/user.entity";
 import { Payment } from "src/payment/entities/payment.entity";
 import { OrderItem } from "./order-item.entity";
+import { Expose } from "class-transformer";
 
 @Entity()
 export class Order {
@@ -23,4 +24,9 @@ export class Order {
 
     @OneToMany(()=> OrderItem, item => item.order, {cascade:true})
     items: OrderItem[]
+
+    @Expose()
+    get total(){
+        return this.items?.reduce((acc,current)=> acc+current.subTotal,0)
+    }
 }

@@ -1,6 +1,7 @@
 import { Column, Entity, ManyToOne, PrimaryColumn } from "typeorm";
 import { Order } from "./order.entity";
 import { Product } from "src/product/entities/product.entity";
+import { Expose } from "class-transformer";
 
 @Entity()
 export class OrderItem{
@@ -21,5 +22,9 @@ export class OrderItem{
     @PrimaryColumn()
     productId:number
 
+    @Expose()
+    get subTotal(){
+        return this.quantity * this.price
+    }
  
 }
