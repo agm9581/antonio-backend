@@ -8,30 +8,10 @@ import { IdDto } from 'src/common/dto/id.dto';
 
 @Controller('payment')
 export class PaymentController {
-  constructor(private readonly paymentService: PaymentsService) {}
+  constructor(private readonly paymentService: PaymentsService) { }
 
-  @Post()
-  create(@Body() createPaymentDto: CreatePaymentDto) {
-    return this.paymentService.create(createPaymentDto);
-  }
-
-  @Get()
-  findAll(@Query()paginationDto: PaginationDto) {
-    return this.paymentService.findAll(paginationDto);
-  }
-
-  @Get(':id')
-  findOne(@Param(){id}: IdDto) {
-    return this.paymentService.findOne(id);
-  }
-
-  @Patch(':id')
-  update(@Param() {id}: IdDto, @Body() updatePaymentDto: UpdatePaymentDto) {
-    return this.paymentService.update(id, updatePaymentDto);
-  }
-
-  @Delete(':id')
-  remove(@Param() {id}: IdDto) {
-    return this.paymentService.remove(id);
+  @Post(':id')
+  payOrder(@Param() { id }: IdDto) {
+    return this.paymentService.payOrder(id)
   }
 }
