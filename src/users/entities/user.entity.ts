@@ -23,6 +23,6 @@ export class User {
   //Embedded entity not a primitive type, anonymous function returning the type
   registryDates: RegistryDates;
 
-  @OneToMany(()=> Order, (order) => order.customer)
+  @OneToMany(() => Order, (order) => order.customer, { cascade: ['soft-remove', 'recover'] })
   orders: Order[]
 }

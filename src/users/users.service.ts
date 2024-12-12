@@ -12,7 +12,7 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
-  ) {}
+  ) { }
   create(createUserDto: CreateUserDto) {
     const user = this.usersRepository.create(createUserDto);
     return this.usersRepository.save(user);
@@ -27,7 +27,7 @@ export class UsersService {
   }
 
   async findOne(id: number) {
-    const user = await this.usersRepository.findOne({ where:{id}, relations:{orders:true}});
+    const user = await this.usersRepository.findOne({ where: { id }, relations: { orders: { items: true, payment: true } } });
     if (!user) {
       throw new NotFoundException("User not found");
     }
@@ -42,8 +42,9 @@ export class UsersService {
     return this.usersRepository.save(user);
   }
 
-  async remove(id: number) {
+  async remove(id: number, soft: boolean) {
     const user = await this.findOne(id);
-    return this.usersRepository.remove(user);
+    return soft ? this.usersRepository.softRemove(user) :
+      this.usersRepository.remove(user);
   }
 }
