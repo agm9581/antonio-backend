@@ -39,6 +39,11 @@ export class UsersController {
     return this.usersService.update(id, updateUserDto);
   }
 
+  @Patch(":id/recover")
+  recover(@Param() { id }: IdDto) {
+    return this.usersService.recover(id);
+  }
+
   @Delete(":id")
   remove(@Param() { id }: IdDto, @Query() { soft }: RemoveDto) {
     return this.usersService.remove(id, soft);
