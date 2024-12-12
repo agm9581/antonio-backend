@@ -1,4 +1,4 @@
-import { IsEntity } from "src/common/decorators/is-entity.decorator";
+import { IsEntity } from "src/common/decorators/validators/is-entity.decorator";
 import { IdDto } from "src/common/dto/id.dto";
 import { Product } from "src/product/entities/product.entity";
 import { Entity } from "typeorm";
@@ -10,11 +10,11 @@ import { Type } from "class-transformer";
 export class CreateOrderDto {
 
     @IsEntity()
-    readonly customer:IdDto
+    readonly customer: IdDto
 
     @ArrayNotEmpty()
     @ValidateNested()
-    @Type(()=>OrderItemDto)
+    @Type(() => OrderItemDto)
     readonly items: OrderItemDto[]
 
 }

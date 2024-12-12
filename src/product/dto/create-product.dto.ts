@@ -1,7 +1,7 @@
 import { Type } from "class-transformer";
 import { ArrayNotEmpty, IsCurrency, IsNumber, IsOptional, IsPositive, Length, ValidateNested } from "class-validator";
-import { IsCardinal } from "src/common/decorators/is-cardinal.decorator";
-import { IsEntity } from "src/common/decorators/is-entity.decorator";
+import { IsCardinal } from "src/common/decorators/validators/is-cardinal.decorator";
+import { IsEntity } from "src/common/decorators/validators/is-entity.decorator";
 import { IdDto } from "src/common/dto/id.dto";
 
 export class CreateProductDto {
@@ -12,10 +12,10 @@ export class CreateProductDto {
 
     @IsOptional()
     @Length(1, 500)
-    readonly description:string
+    readonly description: string
 
     @IsCurrency()
-    readonly price:number
+    readonly price: number
 
     @ArrayNotEmpty()
     @IsEntity()
