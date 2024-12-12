@@ -4,6 +4,7 @@ import {
   IsString,
   IsStrongPassword,
   Length,
+  Matches,
 } from "class-validator";
 
 export class CreateUserDto {
@@ -17,6 +18,6 @@ export class CreateUserDto {
   @IsPhoneNumber("ES")
   readonly phone: string;
 
-  @IsString()
+  @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/)
   readonly password: string;
 }
