@@ -6,6 +6,8 @@ import { User } from "./entities/user.entity";
 import { Repository } from "typeorm";
 import { PaginationDto } from "src/common/dto/pagination.dto";
 import { DEFAULT_PAGE_SIZE } from "src/common/util/common.constants";
+import { genSalt } from "bcrypt";
+import { hash } from "crypto";
 
 @Injectable()
 export class UsersService {
@@ -14,8 +16,10 @@ export class UsersService {
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
   ) { }
-  create(createUserDto: CreateUserDto) {
-    const user = this.usersRepository.create(createUserDto);
+  async create(createUserDto: CreateUserDto) {
+    const { password } = createUserDto
+    const hashedPassword = password && await this.hashPassword(password)
+    const user = this.usersRepository.create({ ...createUserDto, password: hashedPassword });
     return this.usersRepository.save(user);
   }
 
@@ -36,7 +40,9 @@ export class UsersService {
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
-    const user = await this.usersRepository.preload({ id, ...updateUserDto });
+    const { password } = updateUserDto
+    const hashedPassword = password && await this.hashPassword(password)
+    const user = await this.usersRepository.preload({ id, ...updateUserDto, password: hashedPassword });
     if (!user) {
       throw new NotFoundException("User not found");
     }
@@ -59,5 +65,11 @@ export class UsersService {
       throw new ConflictException('User not deleted')
     }
     return this.usersRepository.recover(user)
+  }
+
+
+  private async hashPassword(password: string) {
+    const salt = await genSalt()
+    return hash(password, salt)
   }
 }
