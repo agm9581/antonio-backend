@@ -4,6 +4,7 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class User {
+  // As an example @PrimaryGeneratedColumn('uuid') validated in idDto
   @PrimaryGeneratedColumn()
   id: number;
 

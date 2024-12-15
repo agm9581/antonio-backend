@@ -9,3 +9,15 @@ async function bootstrap() {
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();
+
+
+/** UUID
+ * Virtually 100% unique
+ * 2^128
+ * 
+ * + Avoid database id collision
+ * + Cannot guess an id
+ * 
+ * -Occupies more space
+ * 
+ */
