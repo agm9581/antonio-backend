@@ -1,3 +1,4 @@
+import { Exclude } from "class-transformer";
 import { RegistryDates } from "src/common/embedded/registry-dates.embedded";
 import { Order } from "src/orders/entities/order.entity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
@@ -17,6 +18,7 @@ export class User {
   @Column({ unique: true })
   phone: string;
 
+  @Exclude()
   @Column()
   password: string;
 
