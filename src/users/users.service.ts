@@ -16,12 +16,10 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
-    private readonly hashingService: HashingService
   ) { }
   async create(createUserDto: CreateUserDto) {
-    const { password } = createUserDto
-    const hashedPassword = password && await this.hashingService.hash(password)
-    const user = this.usersRepository.create({ ...createUserDto, password: hashedPassword });
+
+    const user = this.usersRepository.create(createUserDto)
     return this.usersRepository.save(user);
   }
 
@@ -42,9 +40,7 @@ export class UsersService {
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
-    const { password } = updateUserDto
-    const hashedPassword = password && await this.hashingService.hash(password)
-    const user = await this.usersRepository.preload({ id, ...updateUserDto, password: hashedPassword });
+    const user = await this.usersRepository.preload({ id, ...updateUserDto });
     if (!user) {
       throw new NotFoundException("User not found");
     }
