@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
 import { HashingService } from './hashing/hashing.service';
+import { RequestUser } from './interfaces/request-user.interface';
 
 @Injectable()
 export class AuthService {
@@ -27,8 +28,8 @@ export class AuthService {
     if (!isValidPassword) {
       throw new UnauthorizedException('Invalid credentials')
     }
-
-    return { id: user.id }
+    const requestUser: RequestUser = { id: user.id }
+    return requestUser
 
   }
 }
