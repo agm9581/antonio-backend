@@ -12,7 +12,7 @@ export class CategoryService {
   constructor(
     @InjectRepository(Category)
     private readonly categoryRepository: Repository<Category>,
-  ) {}
+  ) { }
   create(createCategoryDto: CreateCategoryDto) {
     const category = this.categoryRepository.create(createCategoryDto);
     return this.categoryRepository.save(category);
@@ -27,7 +27,7 @@ export class CategoryService {
   }
 
   async findOne(id: number) {
-    const category = await this.categoryRepository.findOne({ where:{id}, relations:{products:true}});
+    const category = await this.categoryRepository.findOne({ where: { id }, relations: { products: true } });
     if (!category) {
       throw new NotFoundException("Category not found");
     }
@@ -44,7 +44,7 @@ export class CategoryService {
 
   async remove(id: number) {
     const category = await this.findOne(id);
-    if(category.products.length){
+    if (category.products.length) {
       throw new ConflictException('Category has related products')
     }
     return this.categoryRepository.remove(category);
