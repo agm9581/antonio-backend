@@ -2,7 +2,7 @@ import { Controller, HttpCode, HttpStatus, Post, Request, UseGuards } from '@nes
 import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
 import { LocalAuthGuardGuard } from './guards/local-auth-guard/local-auth-guard.guard';
-import { User } from 'src/users/entities/user.entity';
+import { User } from './decorators/user.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -11,7 +11,7 @@ export class AuthController {
   @UseGuards(LocalAuthGuardGuard)
   @Post('login')
   @HttpCode(HttpStatus.OK)
-  login(@Request() req) {
-    return req.user
+  login(@User() user) {
+    return user
   }
 }
