@@ -9,6 +9,7 @@ import { JwtPayload } from './interfaces/jwt-payload.interface';
 
 @Injectable()
 export class AuthService {
+
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
@@ -39,5 +40,20 @@ export class AuthService {
   login(user: RequestUser) {
     const payload: JwtPayload = { sub: user.id }
     return this.jwtService.sign(payload)
+  }
+
+  async validateJwt(payload: JwtPayload) {
+    const user = await this.userRepository.findOneBy({ id: payload.sub })
+    if (!user) {
+      throw new UnauthorizedException('Invalid token')
+    }
+
+    const requestUser: RequestUser = { id: payload.sub }
+
+    return requestUser
+  }
+
+  getProfile(id: number) {
+    return this.userRepository.findOneBy({ id })
   }
 }

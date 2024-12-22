@@ -10,11 +10,13 @@ import { LocalStrategy } from './strategies/local.strategy';
 import { LoginValidationMiddleware } from './middleware/login-validation/login-validation.middleware';
 import { JwtModule } from '@nestjs/jwt';
 import jwtConfig from './config/jwt.config';
+import { ConfigModule } from '@nestjs/config';
+import { JwtStrategy } from './strategies/jwt.strategy';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User]), PassportModule, JwtModule.registerAsync(jwtConfig.asProvider())],
+  imports: [TypeOrmModule.forFeature([User]), PassportModule, JwtModule.registerAsync(jwtConfig.asProvider()), ConfigModule.forFeature(jwtConfig)],
   controllers: [AuthController],
-  providers: [AuthService, { provide: HashingService, useClass: BcryptService }, LocalStrategy],
+  providers: [AuthService, { provide: HashingService, useClass: BcryptService }, LocalStrategy, JwtStrategy],
   exports: [HashingService]
 })
 export class AuthModule implements NestModule {
