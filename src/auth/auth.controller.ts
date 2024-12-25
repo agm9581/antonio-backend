@@ -6,11 +6,13 @@ import { User } from './decorators/user.decorator';
 import { RequestUser } from './interfaces/request-user.interface';
 import { Response } from 'express';
 import { JwtAuthGuard } from './guards/jwt-auth/jwt-auth.guard';
+import { Public } from './decorators/public.decorator';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) { }
 
+  @Public()
   @UseGuards(LocalAuthGuardGuard)
   @Post('login')
   @HttpCode(HttpStatus.OK)
@@ -23,7 +25,7 @@ export class AuthController {
     })
   }
 
-  @UseGuards(JwtAuthGuard)
+
   @Get('profile')
   getProfile(@User() { id }: RequestUser) {
     return this.authService.getProfile(id)

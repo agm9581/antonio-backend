@@ -12,11 +12,13 @@ import { JwtModule } from '@nestjs/jwt';
 import jwtConfig from './config/jwt.config';
 import { ConfigModule } from '@nestjs/config';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from './guards/jwt-auth/jwt-auth.guard';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User]), PassportModule, JwtModule.registerAsync(jwtConfig.asProvider()), ConfigModule.forFeature(jwtConfig)],
   controllers: [AuthController],
-  providers: [AuthService, { provide: HashingService, useClass: BcryptService }, LocalStrategy, JwtStrategy],
+  providers: [AuthService, { provide: HashingService, useClass: BcryptService }, LocalStrategy, JwtStrategy, { provide: APP_GUARD, useClass: JwtAuthGuard }],
   exports: [HashingService]
 })
 export class AuthModule implements NestModule {
