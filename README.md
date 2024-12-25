@@ -17,3 +17,20 @@ Techniques:
 - PostgreSQL database connections
 - Validation pipes
 - Embed TypeORM properties
+- ENV validation schema
+- DB connections type safety
+- Entities and relations
+- Cascade modifications on entities
+- Entity field serialization
+- Seeding
+- Soft entity deletion and recovery
+- Event listeners
+- Hashing
+- Local auth and JWT auth
+- Custom decorator for request data extraction
+- Middleware for validation
+- Cookie management for JWT
+- Public decorator and globally protected routes with JWT guards
+- JWT token data management
+- Apply RBAC and decorators
+- Rate limiting
