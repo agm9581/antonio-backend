@@ -1,4 +1,4 @@
-import { ConflictException, ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
+import { ConflictException, ForbiddenException, Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -12,6 +12,7 @@ import { HashingService } from "src/auth/hashing/hashing.service";
 import { RequestUser } from "src/auth/interfaces/request-user.interface";
 import { Role } from "src/auth/roles/enums/role.enum";
 import { compareUserId } from "src/auth/util/authorization.util";
+import { LoginDto } from "src/auth/dto/login.dto";
 
 @Injectable()
 export class UsersService {
@@ -19,6 +20,7 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
+    private readonly hashingService: HashingService
   ) { }
   async create(createUserDto: CreateUserDto) {
 
@@ -65,13 +67,17 @@ export class UsersService {
       this.usersRepository.remove(user);
   }
 
-  async recover(id: number, curentUser: RequestUser) {
-    if (curentUser.role !== Role.ADMIN) {
-      compareUserId(curentUser.id, id)
-    }
-    const user = await this.usersRepository.findOne({ where: { id }, relations: { orders: { items: true, payment: true } }, withDeleted: true });
+  async recover(loginDto: LoginDto) {
+    const { email, password } = loginDto
+
+    const user = await this.usersRepository.findOne({ where: { email }, relations: { orders: { items: true, payment: true } }, withDeleted: true });
     if (!user) {
-      throw new NotFoundException('User not found')
+      throw new UnauthorizedException('Invalid credentials')
+    }
+    const isValidPassword = await this.hashingService.compare(password, user.password)
+
+    if (!isValidPassword) {
+      throw new UnauthorizedException('Invalid credentials')
     }
 
     if (!user.isDeleted) {
