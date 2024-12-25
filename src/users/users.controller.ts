@@ -17,6 +17,8 @@ import { RemoveDto } from "src/common/dto/remove.dto";
 import { Public } from "src/auth/decorators/public.decorator";
 import { Roles } from "src/auth/decorators/roles.decorator";
 import { Role } from "src/auth/roles/enums/role.enum";
+import { User } from "src/auth/decorators/user.decorator";
+import { RequestUser } from "src/auth/interfaces/request-user.interface";
 
 @Controller("users")
 export class UsersController {
@@ -41,17 +43,17 @@ export class UsersController {
   }
 
   @Patch(":id")
-  update(@Param() { id }: IdDto, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(id, updateUserDto);
+  update(@Param() { id }: IdDto, @Body() updateUserDto: UpdateUserDto, @User() user: RequestUser) {
+    return this.usersService.update(id, updateUserDto, user);
   }
 
   @Patch(":id/recover")
-  recover(@Param() { id }: IdDto) {
-    return this.usersService.recover(id);
+  recover(@Param() { id }: IdDto, @User() user: RequestUser) {
+    return this.usersService.recover(id, user);
   }
 
   @Delete(":id")
-  remove(@Param() { id }: IdDto, @Query() { soft }: RemoveDto) {
-    return this.usersService.remove(id, soft);
+  remove(@Param() { id }: IdDto, @Query() { soft }: RemoveDto, @User() user: RequestUser) {
+    return this.usersService.remove(id, soft, user);
   }
 }
