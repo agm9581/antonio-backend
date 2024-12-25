@@ -15,6 +15,8 @@ import { IdDto } from "src/common/dto/id.dto";
 import { PaginationDto } from "src/common/dto/pagination.dto";
 import { RemoveDto } from "src/common/dto/remove.dto";
 import { Public } from "src/auth/decorators/public.decorator";
+import { Roles } from "src/auth/decorators/roles.decorator";
+import { Role } from "src/auth/roles/enums/role.enum";
 
 @Controller("users")
 export class UsersController {
@@ -26,11 +28,13 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
+  @Roles(Role.MANAGER)
   @Get()
   findAll(@Query() paginatioDto: PaginationDto) {
     return this.usersService.findAll(paginatioDto);
   }
 
+  @Roles(Role.MANAGER)
   @Get(":id")
   findOne(@Param() { id }: IdDto) {
     return this.usersService.findOne(id);
