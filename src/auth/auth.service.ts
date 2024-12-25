@@ -33,8 +33,8 @@ export class AuthService {
     if (!isValidPassword) {
       throw new UnauthorizedException('Invalid credentials')
     }
-    const requestUser: RequestUser = { id: user.id }
-    return requestUser
+
+    return this.createRequestUser(user)
 
   }
 
@@ -49,9 +49,7 @@ export class AuthService {
       throw new UnauthorizedException('Invalid token')
     }
 
-    const requestUser: RequestUser = { id: payload.sub }
-
-    return requestUser
+    return this.createRequestUser(user)
   }
 
   getProfile(id: number) {
@@ -64,5 +62,11 @@ export class AuthService {
       throw new NotFoundException("User not found");
     }
     return this.userRepository.save(user);
+  }
+
+  private createRequestUser(user: User) {
+    const { id, role } = user
+    const requestUser: RequestUser = { id, role }
+    return requestUser
   }
 }
