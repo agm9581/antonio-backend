@@ -37,11 +37,7 @@ export class UsersService {
   }
 
   async findOne(id: number) {
-    const user = await this.usersRepository.findOne({ where: { id }, relations: { orders: { items: true, payment: true } } });
-    if (!user) {
-      throw new NotFoundException("User not found");
-    }
-    return user;
+    return await this.usersRepository.findOneOrFail({ where: { id }, relations: { orders: { items: true, payment: true } } });
   }
 
   async update(id: number, updateUserDto: UpdateUserDto, curentUser: RequestUser) {
@@ -70,7 +66,7 @@ export class UsersService {
   async recover(loginDto: LoginDto) {
     const { email, password } = loginDto
 
-    const user = await this.usersRepository.findOne({ where: { email }, relations: { orders: { items: true, payment: true } }, withDeleted: true });
+    const user = await this.usersRepository.findOneOrFail({ where: { email }, relations: { orders: { items: true, payment: true } }, withDeleted: true });
     if (!user) {
       throw new UnauthorizedException('Invalid credentials')
     }

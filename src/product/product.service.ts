@@ -12,7 +12,7 @@ export class ProductsService {
   constructor(
     @InjectRepository(Product)
     private readonly productsRepository: Repository<Product>,
-  ) {}
+  ) { }
   create(createProductDto: CreateProductDto) {
     const product = this.productsRepository.create(createProductDto);
     return this.productsRepository.save(product);
@@ -27,11 +27,7 @@ export class ProductsService {
   }
 
   async findOne(id: number) {
-    const product = await this.productsRepository.findOne({ where:{id}, relations:{orders:true}});
-    if (!product) {
-      throw new NotFoundException("Product not found");
-    }
-    return product;
+    return await this.productsRepository.findOneOrFail({ where: { id }, relations: { orders: true } });
   }
 
   async update(id: number, updateProductDto: UpdateProductDto) {

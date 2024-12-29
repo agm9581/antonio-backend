@@ -19,14 +19,14 @@ export class OrdersService {
     private readonly productsRepository: Repository<Product>,
     @InjectRepository(OrderItem)
     private readonly orderitemsRepository: Repository<OrderItem>,
-  ) {}
+  ) { }
   async create(createOrderDto: CreateOrderDto) {
-    const {items} =  createOrderDto
+    const { items } = createOrderDto
 
     const itemsWithPrice = await Promise.all(
       items.map(item => this.createOrderItemWithPrice(item)
-    ))
-    const order = this.ordersRepository.create({...createOrderDto,items:itemsWithPrice});
+      ))
+    const order = this.ordersRepository.create({ ...createOrderDto, items: itemsWithPrice });
     return this.ordersRepository.save(order);
   }
 
@@ -39,11 +39,7 @@ export class OrdersService {
   }
 
   async findOne(id: number) {
-    const order = await this.ordersRepository.findOne({ where:{id}, relations:{items:{product:true},customer:true, payment:true}});
-    if (!order) {
-      throw new NotFoundException("Order not found");
-    }
-    return order;
+    return await this.ordersRepository.findOneOrFail({ where: { id }, relations: { items: { product: true }, customer: true, payment: true } });
   }
 
   async remove(id: number) {
@@ -51,16 +47,16 @@ export class OrdersService {
     return this.ordersRepository.remove(order);
   }
 
-  private async createOrderItemWithPrice ( orderItemDto: OrderItemDto){
-    const {id} = orderItemDto.product
+  private async createOrderItemWithPrice(orderItemDto: OrderItemDto) {
+    const { id } = orderItemDto.product
 
-    const product = await this.productsRepository.findOneBy({id})
-    if(!product){
+    const product = await this.productsRepository.findOneBy({ id })
+    if (!product) {
       throw new NotFoundException('Product not found')
     }
-    const {price} = product
+    const { price } = product
 
-    const orderItem = this.orderitemsRepository.create({...orderItemDto,price})
+    const orderItem = this.orderitemsRepository.create({ ...orderItemDto, price })
     return orderItem
   }
 }

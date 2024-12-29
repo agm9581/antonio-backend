@@ -21,7 +21,7 @@ export class AuthService {
   }
 
   async validateLocal(email: string, password: string) {
-    const user = await this.userRepository.findOne({ select: { id: true, password: true }, where: { email } })
+    const user = await this.userRepository.findOneOrFail({ select: { id: true, password: true }, where: { email } })
 
     if (!user) {
       throw new UnauthorizedException('Invalid credentials')
