@@ -34,3 +34,4 @@ Techniques:
 - JWT token data management
 - Apply RBAC and decorators
 - Rate limiting
+- Exception filters based on http or database types
