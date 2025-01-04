@@ -7,7 +7,8 @@ import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { IdDto } from 'src/common/dto/id.dto';
 import { User } from 'src/auth/decorators/user.decorator';
 import { RequestUser } from 'src/auth/interfaces/request-user.interface';
-
+import { ApiTags } from '@nestjs/swagger';
+@ApiTags('payment')
 @Controller('payment')
 export class PaymentController {
   constructor(private readonly paymentService: PaymentsService) { }

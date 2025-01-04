@@ -15,7 +15,8 @@ import { IdDto } from "src/common/dto/id.dto";
 import { Public } from "src/auth/decorators/public.decorator";
 import { Roles } from "src/auth/decorators/roles.decorator";
 import { Role } from "src/auth/roles/enums/role.enum";
-
+import { ApiTags } from "@nestjs/swagger";
+@ApiTags('category')
 @Controller("category")
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) { }

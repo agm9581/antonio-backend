@@ -20,7 +20,8 @@ import { Role } from "src/auth/roles/enums/role.enum";
 import { User } from "src/auth/decorators/user.decorator";
 import { RequestUser } from "src/auth/interfaces/request-user.interface";
 import { LoginDto } from "src/auth/dto/login.dto";
-
+import { ApiTags } from "@nestjs/swagger";
+@ApiTags('users')
 @Controller("users")
 export class UsersController {
   constructor(private readonly usersService: UsersService) { }
