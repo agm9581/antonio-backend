@@ -7,7 +7,15 @@ import { AtLeastOnedigit } from "./text-validation/at-least-1-digit.decorator"
 import { OnlyRequiredCharacters } from "./text-validation/only-required-characters.decorator"
 
 
-
+/**
+ * Checks if the value is a string following these rules:
+ * 1. 8 to 20 characters
+ * 2. At least one
+ * - Lowercase letter
+ * - Uppercase Letter
+ * - Number
+ * - Special character
+ */
 
 
 export const IsPassword = (validationOptions?: ValidationOptions): PropertyDecorator =>

@@ -6,7 +6,7 @@ import {
   Length,
   Matches,
 } from "class-validator";
-import { isPassword } from "src/common/decorators/validators/is-password.decorator";
+import { IsPassword } from "src/common/decorators/validators/is-password.decorator";
 
 export class CreateUserDto {
   @IsString()
@@ -19,6 +19,15 @@ export class CreateUserDto {
   @IsPhoneNumber("ES")
   readonly phone: string;
 
-  @isPassword()
+  /**
+ * Checks if the value is a string following these rules:
+ * 1. 8 to 20 characters
+ * 2. At least one
+ * - Lowercase letter
+ * - Uppercase Letter
+ * - Number
+ * - Special character
+ */
+  @IsPassword()
   readonly password: string;
 }
