@@ -16,7 +16,7 @@ export class FseService implements StorageService {
 
     async createDir(path: string) {
         const fullPath = join(BASE_PATH, path)
-        await mkdirp(path)
+        await mkdirp(fullPath)
 
     }
 
