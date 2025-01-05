@@ -22,6 +22,7 @@ import { Role } from "src/auth/roles/enums/role.enum";
 import { Roles } from "src/auth/decorators/roles.decorator";
 import { ApiTags } from "@nestjs/swagger";
 import { FileInterceptor } from "@nestjs/platform-express";
+import { createFileValidators } from "src/files/util/file-validation.util";
 @ApiTags('product')
 @Controller("product")
 export class ProductController {
@@ -57,7 +58,7 @@ export class ProductController {
 
   @UseInterceptors(FileInterceptor('file'))
   @Post(':id/image')
-  uploadImage(@UploadedFile(new ParseFilePipe({ validators: [new MaxFileSizeValidator({ maxSize: 2 * 1024 * 1024 }), new FileTypeValidator({ fileType: /png|jpeg/ })] })) file: Express.Multer.File) {
+  uploadImage(@UploadedFile(new ParseFilePipe({ validators: createFileValidators('2MB', 'png', "jpeg") })) file: Express.Multer.File) {
     return file
   }
 }
