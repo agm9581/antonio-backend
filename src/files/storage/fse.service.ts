@@ -11,7 +11,7 @@ export class FseService implements StorageService {
         const { originalname, buffer } = file
         const uniqueFileName = this.genUniqueFilename(originalname)
         const fullPath = join(BASE_PATH, path, uniqueFileName)
-        await writeFile(fullPath, file.buffer)
+        await writeFile(fullPath, buffer)
     }
 
     async createDir(path: string) {
