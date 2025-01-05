@@ -21,7 +21,7 @@ import { Public } from "src/auth/decorators/public.decorator";
 import { Role } from "src/auth/roles/enums/role.enum";
 import { Roles } from "src/auth/decorators/roles.decorator";
 import { ApiTags } from "@nestjs/swagger";
-import { FileInterceptor } from "@nestjs/platform-express";
+import { FileInterceptor, FilesInterceptor } from "@nestjs/platform-express";
 import { createFileValidators } from "src/files/util/file-validation.util";
 @ApiTags('product')
 @Controller("product")
@@ -56,9 +56,9 @@ export class ProductController {
     return this.productService.remove(id);
   }
 
-  @UseInterceptors(FileInterceptor('file'))
-  @Post(':id/image')
-  uploadImage(@UploadedFile(new ParseFilePipe({ validators: createFileValidators('2MB', 'png', "jpeg") })) file: Express.Multer.File) {
-    return file
+  @UseInterceptors(FilesInterceptor('files', 5))
+  @Post(':id/images')
+  uploadImages(@UploadedFile(new ParseFilePipe({ validators: createFileValidators('2MB', 'png', "jpeg") })) files: Express.Multer.File[]) {
+    return files
   }
 }
