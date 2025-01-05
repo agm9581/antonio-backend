@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, StreamableFile } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException, StreamableFile } from '@nestjs/common';
 import { StorageService } from './storage.service';
 import { BASE_PATH } from '../util/file.constants';
 import { join } from 'path';
@@ -6,8 +6,11 @@ import { createReadStream, mkdirp, pathExists, readdir, remove, writeFile } from
 
 @Injectable()
 export class FseService implements StorageService {
+
     async saveFile(path: string, file: Express.Multer.File) {
-        const fullPath = join(BASE_PATH, path, file.originalname)
+        const { originalname, buffer } = file
+        const uniqueFileName = this.genUniqueFilename(originalname)
+        const fullPath = join(BASE_PATH, path, uniqueFileName)
         await writeFile(fullPath, file.buffer)
     }
 
@@ -41,5 +44,15 @@ export class FseService implements StorageService {
         if (!await pathExists(fullPath)) {
             throw new NotFoundException('Path not found')
         }
+    }
+
+    validateFileCount(count: number, max: number) {
+        if (count > max) {
+            throw new ConflictException('File count exceeds max limit')
+        }
+    }
+    genUniqueFilename(filename: string) {
+        const uniquePrefix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`
+        return `${uniquePrefix}-${filename}`
     }
 }
