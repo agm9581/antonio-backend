@@ -3,6 +3,7 @@ import { StorageService } from './storage/storage.service';
 import { FseService } from './storage/fse.service';
 
 @Module({
-  providers: [{ provide: StorageService, useClass: FseService }]
+  providers: [{ provide: StorageService, useClass: FseService }],
+  exports: [StorageService]
 })
 export class FilesModule { }
