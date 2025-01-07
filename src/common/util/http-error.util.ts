@@ -9,6 +9,18 @@ export const HttpError = {
         status: HttpStatus.CONFLICT,
         error: 'Conflict'
     },
+    PAYLOAD_TOO_LARGE: {
+        status: HttpStatus.PAYLOAD_TOO_LARGE,
+        error: 'Payload too large'
+    },
+    UNSUPPORTED_MEDIA_TYPE: {
+        status: HttpStatus.UNSUPPORTED_MEDIA_TYPE,
+        error: 'Unsupported media type'
+    },
+    BAD_REQUEST: {
+        status: HttpStatus.BAD_REQUEST,
+        error: 'Bad request'
+    }
 
     //
 } as const satisfies Record<string, IHttpError>
