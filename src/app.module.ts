@@ -9,9 +9,10 @@ import { CategoryModule } from './category/category.module';
 import { ProductModule } from './product/product.module';
 import { AuthModule } from './auth/auth.module';
 import { FilesModule } from './files/files.module';
+import { QueryingModule } from './querying/querying.module';
 
 @Module({
-  imports: [UsersModule, CommonModule, DatabaseModule, EnvModule, OrdersModule, PaymentModule, CategoryModule, ProductModule, AuthModule, FilesModule],
+  imports: [UsersModule, CommonModule, DatabaseModule, EnvModule, OrdersModule, PaymentModule, CategoryModule, ProductModule, AuthModule, FilesModule, QueryingModule],
   controllers: [],
   providers: [],
 })

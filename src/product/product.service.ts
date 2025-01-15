@@ -10,6 +10,7 @@ import { StorageService } from "src/files/storage/storage.service";
 import { BASE_PATH, FilePath, MaxFileCount } from "src/files/util/file.constants";
 import { join } from "path";
 import { pathExists } from "fs-extra";
+import { PaginationService } from "src/querying/pagination.service";
 
 @Injectable()
 export class ProductsService {
@@ -17,7 +18,8 @@ export class ProductsService {
   constructor(
     @InjectRepository(Product)
     private readonly productsRepository: Repository<Product>,
-    private readonly storageService: StorageService
+    private readonly storageService: StorageService,
+    private readonly paginationService: PaginationService
   ) { }
   create(createProductDto: CreateProductDto) {
     const product = this.productsRepository.create(createProductDto);
@@ -25,12 +27,15 @@ export class ProductsService {
   }
 
   async findAll(paginatioDto: PaginationDto) {
-    const { limit, offset } = paginatioDto;
+    const { page } = paginatioDto;
+    const limit = paginatioDto.limit ?? DEFAULT_PAGE_SIZE.PRODUCT
+    const offset = this.paginationService.calculateOffset(limit, page)
     const [data, count] = await this.productsRepository.findAndCount({
       skip: offset,
       take: limit ?? DEFAULT_PAGE_SIZE.PRODUCT,
     });
-    return { data, count }
+    const meta = this.paginationService.createMeta(limit, page, count)
+    return { data, meta }
   }
 
   async findOne(id: number) {
