@@ -3,7 +3,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
 import { PaymentsService } from './payment.service';
-import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { PaginationDto } from "src/querying/dto/pagination.dto";
 import { IdDto } from 'src/common/dto/id.dto';
 import { User } from 'src/auth/decorators/user.decorator';
 import { RequestUser } from 'src/auth/interfaces/request-user.interface';

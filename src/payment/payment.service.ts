@@ -1,7 +1,7 @@
 
 import { ConflictException, Injectable, NotFoundException, Query } from '@nestjs/common';
 
-import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { PaginationDto } from "src/querying/dto/pagination.dto";
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
 import { InjectRepository } from '@nestjs/typeorm';
